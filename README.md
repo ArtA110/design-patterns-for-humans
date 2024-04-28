@@ -930,6 +930,77 @@ marketingManager.takeInterview();
 </details>
 
 
+<details>
+<summary>++C</summary>
+
+<div dir="ltr">
+
+```C++
+#include <iostream>
+
+class Interviewer {
+public:
+    virtual void askQuestions() = 0;
+    virtual ~Interviewer() {}  // Virtual destructor
+};
+
+class Developer : public Interviewer {
+public:
+    void askQuestions() override {
+        std::cout << "Asking about design patterns" << std::endl;
+    }
+};
+
+class CommunityExecutive : public Interviewer {
+public:
+    void askQuestions() override {
+        std::cout << "Asking about community building" << std::endl;
+    }
+};
+
+class HiringManager {
+public:
+    virtual Interviewer* makeInterviewer() = 0;
+    
+    void takeInterview() {
+        Interviewer* interviewer = makeInterviewer();
+        interviewer->askQuestions();
+        delete interviewer;  // Remember to delete the dynamically allocated object
+    }
+
+    virtual ~HiringManager() {}
+};
+
+class DevelopmentManager : public HiringManager {
+public:
+    Interviewer* makeInterviewer() override {
+        return new Developer();
+    }
+};
+
+class MarketingManager : public HiringManager {
+public:
+    Interviewer* makeInterviewer() override {
+        return new CommunityExecutive();
+    }
+};
+
+int main() {
+    DevelopmentManager devManager;
+    devManager.takeInterview();
+    // Output: Asking about design patterns
+
+    MarketingManager marketingManager;
+    marketingManager.takeInterview();
+    // Output: Asking about community building
+
+    return 0;
+}
+
+```
+</div>
+</details>
+
 <br>
 
 **چه موقع باید ازش استفاده کنیم؟**
