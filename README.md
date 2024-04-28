@@ -458,6 +458,64 @@ System.out.println(door.getWidth());
 </details>
 
 
+<details>
+<summary>++C</summary>
+
+<div dir="ltr">
+
+```C++
+#include <iostream>
+
+// Base class
+class Door {
+public:
+    virtual int getWidth() const = 0;
+    virtual int getHeight() const = 0;
+};
+
+// Derived class
+class WoodenDoor : public Door {
+private:
+    int width;
+    int height;
+
+public:
+    WoodenDoor(int w = 5, int h = 5) : width(w), height(h) {}
+
+    int getWidth() const override {
+        return width;
+    }
+
+    int getHeight() const override {
+        return height;
+    }
+};
+
+// Factory class: DoorFactory
+class DoorFactory {
+public:
+    static Door* makeDoor(int width, int height) {
+        return new WoodenDoor(width, height);
+    }
+};
+
+int main() {
+    // Create a door using the DoorFactory
+    Door* door = DoorFactory::makeDoor(10, 10);
+
+    // Access and print door dimensions
+    std::cout << "Height: " << door->getHeight() << std::endl;
+    std::cout << "Width: " << door->getWidth() << std::endl;
+
+    // Clean up memory (important in C++)
+    delete door;
+
+    return 0;
+}
+```
+</div>
+</details>
+
 <br>
 
 ---
