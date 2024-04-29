@@ -3099,6 +3099,51 @@ if __name__ == "__main__":
 </details>
 
 <details>
+<summary>Python (Thread safe)</summary>
+
+<div dir="ltr">
+
+```python
+import threading
+
+class SingletonMeta(type):
+    _instances = {}
+    _lock = threading.Lock()  # Lock for synchronization
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            with cls._lock:
+                if cls not in cls._instances:
+                    instance = super().__call__(*args, **kwargs)
+                    cls._instances[cls] = instance
+        return cls._instances[cls]
+
+class Singleton(metaclass=SingletonMeta):
+    def __init__(self):
+        pass
+
+# Testing thread safety
+def create_singleton():
+    s = Singleton()
+    print(f"Created singleton instance: {id(s)}")
+
+# Create multiple threads to test concurrent instance creation
+threads = []
+for _ in range(10):
+    t = threading.Thread(target=create_singleton)
+    threads.append(t)
+    t.start()
+
+for t in threads:
+    t.join()
+```
+
+</div>
+اگر این روش رو بدون lock هم تست کنین امکان خیلی کمی وجود داره که آیدی ها متفاوت بشه ولی با lock تفاوت آیدی ها غیر ممکن میشه. در اصل ما کاری میکنیم که دو تا thread همزمان نتونن وارد ناحیه بحرانی بشن، میشه اینکار رو با استفاده از lock (Mutex) یا Lazy Initialization انجام داد
+
+</details>
+
+<details>
 <summary>Typescript</summary>
 <div dir="ltr">
 
