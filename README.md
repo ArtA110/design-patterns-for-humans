@@ -168,7 +168,6 @@
 <div dir="ltr">
 
 ```python
-import copy
 class Door:
     def getWidth(self):
         pass
@@ -2487,6 +2486,7 @@ int main() {
 <div dir="ltr">
 
 ```python
+import copy
 class SomeComponent:
     def __init__(self, some_int, some_list_of_objects, some_circular_ref):
         self.some_int = some_int
