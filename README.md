@@ -2510,6 +2510,27 @@ class SomeComponent:
         new.__dict__ = copy.deepcopy(self.__dict__, memo)
 
         return new
+----------------------------------------------------------------------
+lst = [1,2,3,4]
+i = 5
+nested_l = [1,2,3,lst]
+
+s = SomeComponent(i,lst,nested_l)
+s2 = s.__copy__()
+print(s.some_circular_ref, s2.some_circular_ref)
+s.some_circular_ref.append(2)
+print(s.some_circular_ref, s2.some_circular_ref)
+
+lst = [1,2,3,4]
+i = 5
+nested_l = [1,2,3,lst]
+
+s = SomeComponent(i,lst,nested_l)
+s2 = s.__deepcopy__()
+print(s.some_circular_ref, s2.some_circular_ref)
+s.some_circular_ref.append(2)
+print(s.some_circular_ref, s2.some_circular_ref)
+
 ```
 
 </div>
