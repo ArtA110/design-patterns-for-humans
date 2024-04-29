@@ -1849,6 +1849,18 @@ public Burger(int size, boolean cheese, boolean pepperoni, boolean lettuce, bool
 </div>
 </details>
 
+<details>
+  <summary>++C</summary>
+
+<div dir="ltr">
+
+```C++
+Burger(int size, bool hasCheese, bool hasPepperoni, bool hasLettuce, bool hasTomato)
+        : size(size), cheese(hasCheese), pepperoni(hasPepperoni), lettuce(hasLettuce), tomato(hasTomato) {}
+```
+</div>
+</details>
+
 در این شرایط معمولا Builder میتونه به دادمون برسه.
 
 <br>
@@ -2330,6 +2342,89 @@ Burger burger = Burger.builder()
         .build();
 
 System.out.println(burger.getDescription());
+```
+</div>
+</details>
+
+<details>
+<summary>++C</summary>
+
+<div dir="ltr">
+
+```C++
+#include <iostream>
+#include <string>
+
+
+class Burger {
+private:
+    int size;
+    bool cheese;
+    bool pepperoni;
+    bool lettuce;
+    bool tomato;
+
+public:
+    Burger(int size, bool hasCheese, bool hasPepperoni, bool hasLettuce, bool hasTomato)
+        : size(size), cheese(hasCheese), pepperoni(hasPepperoni), lettuce(hasLettuce), tomato(hasTomato) {}
+
+    void display() const {
+        std::cout << "Burger with size " << size << " and toppings:";
+        if (cheese) std::cout << " Cheese";
+        if (pepperoni) std::cout << " Pepperoni";
+        if (lettuce) std::cout << " Lettuce";
+        if (tomato) std::cout << " Tomato";
+        std::cout << std::endl;
+    }
+};
+
+
+class BurgerBuilder {
+private:
+    int size;
+    bool cheese;
+    bool pepperoni;
+    bool lettuce;
+    bool tomato;
+
+public:
+    BurgerBuilder(int size) : size(size), cheese(false), pepperoni(false), lettuce(false), tomato(false) {}
+
+    BurgerBuilder& addCheese() {
+        cheese = true;
+        return *this;
+    }
+
+    BurgerBuilder& addPepperoni() {
+        pepperoni = true;
+        return *this;
+    }
+
+    BurgerBuilder& addLettuce() {
+        lettuce = true;
+        return *this;
+    }
+
+    BurgerBuilder& addTomato() {
+        tomato = true;
+        return *this;
+    }
+
+    Burger build() const {
+        return Burger(size, cheese, pepperoni, lettuce, tomato);
+    }
+};
+
+int main() {
+    // Create a Burger using BurgerBuilder
+    BurgerBuilder builder(10);
+    Burger burger = builder.addPepperoni().addLettuce().addTomato().build();
+
+    // Display the details of the constructed Burger
+    burger.display();
+
+    return 0;
+}
 ```
 </div>
 </details>
