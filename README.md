@@ -168,6 +168,7 @@
 <div dir="ltr">
 
 ```python
+import copy
 class Door:
     def getWidth(self):
         pass
