@@ -2944,6 +2944,74 @@ System.out.println(mainComponent.getSomeString().equals(clonedComponent.getSomeS
 
 </details>
 
+<details>
+  <summary>++C</summary>
+
+<div dir="ltr">
+
+```C++
+#include <iostream>
+#include <vector>
+#include <memory>
+
+class SomeComponent {
+private:
+    int some_int;
+    std::vector<int> some_list_of_objects;
+    std::shared_ptr<std::vector<int>> some_circular_ref;
+
+public:
+    SomeComponent(int some_int, const std::vector<int>& some_list_of_objects, const std::shared_ptr<std::vector<int>>& some_circular_ref)
+        : some_int(some_int), some_list_of_objects(some_list_of_objects), some_circular_ref(some_circular_ref) {}
+
+    // Shallow clone method
+    std::shared_ptr<SomeComponent> clone() {
+        return std::make_shared<SomeComponent>(*this);  // Shallow copy using copy constructor
+    }
+
+    // Deep clone method
+    std::shared_ptr<SomeComponent> deepClone() {
+        std::vector<int> deep_list = some_list_of_objects;
+        auto deep_circular = std::make_shared<std::vector<int>>(*some_circular_ref);
+        return std::make_shared<SomeComponent>(some_int, deep_list, deep_circular);
+    }
+
+    void display() {
+        std::cout << "some_int: " << some_int << std::endl;
+        std::cout << "some_list_of_objects: ";
+        for (const auto& obj : some_list_of_objects) {
+            std::cout << obj << " ";
+        }
+        std::cout << std::endl;
+        std::cout << "some_circular_ref: ";
+        for (const auto& obj : *some_circular_ref) {
+            std::cout << obj << " ";
+        }
+        std::cout << std::endl;
+    }
+};
+
+int main() {
+    std::vector<int> list = {1, 2, 3};
+    std::shared_ptr<std::vector<int>> circular_ref = std::make_shared<std::vector<int>>(list);
+
+    std::shared_ptr<SomeComponent> original = std::make_shared<SomeComponent>(10, list, circular_ref);
+
+    // Shallow clone
+    std::shared_ptr<SomeComponent> shallow_copy = original->clone();
+
+    // Deep clone
+    std::shared_ptr<SomeComponent> deep_copy = original->deepClone();
+
+
+    return 0;
+}
+```
+
+</div>
+
+</details>
+
 <br>
 
 **تفاوت Shadow Copy و Deep Copy ؟**
