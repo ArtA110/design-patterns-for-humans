@@ -1625,6 +1625,118 @@ ironDoorFittingExpert.GetDescription(); //Output : I can only fit iron doors
 
 </details>
 
+<details>
+<summary>++C</summary>
+
+<div dir="ltr">
+
+```C++
+#include <iostream>
+
+// Abstract base class
+class Door {
+public:
+    virtual void getDescription() const = 0;
+    virtual ~Door() {}  // Virtual destructor for polymorphic behavior
+};
+
+
+class WoodenDoor : public Door {
+public:
+    void getDescription() const override {
+        std::cout << "I am a wooden door" << std::endl;
+    }
+};
+
+class IronDoor : public Door {
+public:
+    void getDescription() const override {
+        std::cout << "I am an iron door" << std::endl;
+    }
+};
+
+class DoorFittingExpert {
+public:
+    virtual void getDescription() const = 0;
+    virtual ~DoorFittingExpert() {}
+};
+
+class Carpenter : public DoorFittingExpert {
+public:
+    void getDescription() const override {
+        std::cout << "I can only fit wooden doors" << std::endl;
+    }
+};
+
+class Welder : public DoorFittingExpert {
+public:
+    void getDescription() const override {
+        std::cout << "I can only fit iron doors" << std::endl;
+    }
+};
+
+// Abstract Factory Interface
+class DoorFactory {
+public:
+    virtual Door* makeDoor() = 0;
+    virtual DoorFittingExpert* makeFittingExpert() = 0;
+    virtual ~DoorFactory() {}
+};
+
+class WoodenDoorFactory : public DoorFactory {
+public:
+    Door* makeDoor() override {
+        return new WoodenDoor();
+    }
+
+    DoorFittingExpert* makeFittingExpert() override {
+        return new Carpenter();
+    }
+};
+
+class IronDoorFactory : public DoorFactory {
+public:
+    Door* makeDoor() override {
+        return new IronDoor();
+    }
+
+    DoorFittingExpert* makeFittingExpert() override {
+        return new Welder();
+    }
+};
+
+int main() {
+    DoorFactory* woodenFactory = new WoodenDoorFactory();
+    Door* woodenDoor = woodenFactory->makeDoor();
+    DoorFittingExpert* woodenExpert = woodenFactory->makeFittingExpert();
+
+    woodenDoor->getDescription();  // Output: I am a wooden door
+    woodenExpert->getDescription();  // Output: I can only fit wooden doors
+
+    delete woodenDoor;
+    delete woodenExpert;
+    delete woodenFactory;
+
+    DoorFactory* ironFactory = new IronDoorFactory();
+    Door* ironDoor = ironFactory->makeDoor();
+    DoorFittingExpert* ironExpert = ironFactory->makeFittingExpert();
+
+    ironDoor->getDescription();  // Output: I am an iron door
+    ironExpert->getDescription();  // Output: I can only fit iron doors
+
+    delete ironDoor;
+    delete ironExpert;
+    delete ironFactory;
+
+    return 0;
+}
+```
+</div>
+**همونطور که میبیند، می‌تونیم به‌طور مشابه با هر دو نوع درب برخورد کنیم و ازین موضوع مطمئن باشیم که متخصص اشتباه برای یک
+درب
+انتخاب نمی‌کنیم.**
+</details>
+
 <br>
 
 **چه موقع باید ازش استفاده کنیم؟**
